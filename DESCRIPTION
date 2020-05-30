@@ -1,0 +1,14 @@
+Package: RClass
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sung Young",
+           family = "Kim",
+           role = c("aut", "cre"),
+           email = "palelamp@kku.ac.kr")
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: limma, shiny
