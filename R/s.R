@@ -13,3 +13,5 @@ AppUI <- function() {
   currentfilePath <- dirname(rstudioapi::getSourceEditorContext()$path)
   pkgname <-(pkg <- strsplit(currentfilePath, '/'))[[1]][length(pkg[[1]])-1]; pkgname 
   shiny::runApp(system.file("shiny", package=pkgname))} #
+appU <- function() { loc <- gsub('.*:', '', getAnywhere("AppUI")$where[1]) 
+  shiny::runApp(system.file("shiny", package=loc))  }
