@@ -111,8 +111,10 @@ normalize.q <- function(x= data.frame(matrix(sample(12, replace = T), 4)), filte
 
 DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 25, plotDEG =T, multipleRegression=F, rowCounts=F, meanFilter=10, PDF=T, cname='temp' ) {
   try(dev.off(), silent = T)
+
   is.installed(c('ggplot2', 'ggrepel'))
   is.installed(c('limma', 'ComplexHeatmap'))
+
   
   if(rowCounts) { Exp <- Exp[apply(Exp, 1, mean) > meanFilter, ]; Exp <- voom(Exp, plot = T) }
   
