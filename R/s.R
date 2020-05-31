@@ -18,25 +18,37 @@ appU <- function() { loc <- gsub('.*:', '', getAnywhere("AppUI")$where[1])
 
 options(stringsAsFactors = FALSE)
 
+
+
  
 #' @export 
 is.installed <- function(RequiredPackages) {
+  pinx <- which(RequiredPackages %in% installed.packages()[,1])
+  if(length(pinx) !=0) {RequiredPackages<- RequiredPackages[-which(RequiredPackages %in% installed.packages()[,1])] }; RequiredPackages 
+  Inx <- readline(prompt= sprintf("\nThis function needs %s package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return", RequiredPackages) );
+  if( Inx == 'y' || Inx == 'Y' ) {
   for (i in RequiredPackages) { # Installs packages if not yet installed
-    if (!is.element(i, installed.packages()[,1]))  install.packages(i)
+   # if (!is.element(i, installed.packages()[,1]))  
+    install.packages(i)
     require(i, character.only = T)
-  }
-}
+  # }
+  } } else { stop() } }
+
 
 #' @export 
 is.installed.bioconductor <- function(RequiredPackages) {
+  pinx <- which(RequiredPackages %in% installed.packages()[,1])
+  if(length(pinx) !=0) {RequiredPackages<- RequiredPackages[-which(RequiredPackages %in% installed.packages()[,1])] }; RequiredPackages 
+  Inx <- readline(prompt= sprintf("\nThis function needs %s bioconductor package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return", RequiredPackages) );
+  if( Inx == 'y' || Inx == 'Y' ) {
   for (i in RequiredPackages) { # Installs packages if not yet installed
-    if (!is.element(i, installed.packages()[,1])) {
-      source("http://bioconductor.org/biocLite.R")
-      biocLite(i)  
+   # if (!is.element(i, installed.packages()[,1])) {
+      if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+        BiocManager::install(i)
       require(i, character.only = T)
-    }
-  }
-}
+    # }
+  } } else { stop() } }
 
 
 
@@ -120,8 +132,8 @@ normalize.q <- function(x= data.frame(matrix(sample(12, replace = T), 4)), filte
 DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 25, plotDEG =T, multipleRegression=F, rowCounts=F, meanFilter=10, PDF=T, cname='temp' ) {
   try(dev.off(), silent = T)
 
-#  is.installed(c('ggplot2', 'ggrepel'))
-#  is.installed(c('limma', 'ComplexHeatmap'))
+  is.installed(c('ggplot2', 'ggrepel'))
+  is.installed(c('limma', 'ComplexHeatmap'))
 
   
   if(rowCounts) { Exp <- Exp[apply(Exp, 1, mean) > meanFilter, ]; Exp <- voom(Exp, plot = T) }
