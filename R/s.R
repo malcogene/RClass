@@ -53,15 +53,15 @@ is.installed.bioconductor <- function(RequiredPackages) {
 
 
 #' @export 
-loadUrl <- function(url, sep=c("RData"," ", "," , "\t", ";", "xls", "gsheet"), ...) {
+loadUrl <- function(url, downloadPath = NA, sep=c("RData"," ", "," , "\t", ";", "xls", "gsheet"), ...) {
   cat('onedrive: copy link\n googlesheet: share-> Anyone with the link\n sep: "RData", ..."xls", "gsheet"\n')
-  
-  tmpFile <- tempfile()
+  if(!is.na(downloadPath))  { tmpFile <- downloadPath
+ 
+  } else { tmpFile <- file.path(getwd(), paste0(substr(Sys.time(), 1, 10), '.rda' ))  }
   url2 <- gsub("e=.*", "download=1", url)
-  download.file(url2,tmpFile)
+  download.file(url2, tmpFile)
   sep <- match.arg(sep)
   if(sep == "RData") {
-    tmpFile='c:\\User'
     print(tmpFile)
     tmpFile <-  gsub("\\\\", "/", tmpFile)
     print(tmpFile)
