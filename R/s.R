@@ -18,6 +18,8 @@ appU <- function() { loc <- gsub('.*:', '', getAnywhere("AppUI")$where[1])
 
 options(stringsAsFactors = FALSE)
 
+ 
+#' @export 
 is.installed <- function(RequiredPackages) {
   for (i in RequiredPackages) { # Installs packages if not yet installed
     if (!is.element(i, installed.packages()[,1]))  install.packages(i)
@@ -25,6 +27,7 @@ is.installed <- function(RequiredPackages) {
   }
 }
 
+#' @export 
 is.installed.bioconductor <- function(RequiredPackages) {
   for (i in RequiredPackages) { # Installs packages if not yet installed
     if (!is.element(i, installed.packages()[,1])) {
@@ -36,6 +39,8 @@ is.installed.bioconductor <- function(RequiredPackages) {
 }
 
 
+
+#' @export 
 loadUrl <- function(url, sep=c("RData"," ", "," , "\t", ";", "xls", "gsheet"), ...) {
   cat('onedrive: copy link\n googlesheet: share-> Anyone with the link\n sep: "RData", ..."xls", "gsheet"\n')
   
@@ -61,6 +66,9 @@ loadUrl <- function(url, sep=c("RData"," ", "," , "\t", ";", "xls", "gsheet"), .
   justLoaded 
 }
 
+
+
+#' @export 
 browseEntrez <- function(entrezIDs) {
   for(i in entrezIDs) {
     browseURL(paste0("https://www.ncbi.nlm.nih.gov/gene/", i))
@@ -68,12 +76,12 @@ browseEntrez <- function(entrezIDs) {
 }
 
 
-
+#' @export 
 peep <- function(x, boxplot = F ) { 
   if(is.null(dim(x))) { if(length(x) > 10)  { print(x[1:10]) } else { print(x) }  } else if (dim(x)[1] >=10 && dim(x)[2]>=5 ){ print(x[1:5, 1:3]); boxplot(x[1:5, 1:3]) } else {print(head(x)); boxplot(x)} }
 
 
-
+#' @export 
 normalize.q <- function(x= data.frame(matrix(sample(12, replace = T), 4)), filter.sd.quantile = 0.1, tied = c("average", "min", "max"), verbose = T ) {
   # compare to normalize.quantiles, 1. accept data.frame 2. tie control option:"average", "min", "max"  3. sd.filter 4. peep & plot & verbose...
   
@@ -108,12 +116,12 @@ normalize.q <- function(x= data.frame(matrix(sample(12, replace = T), 4)), filte
 
 
 
-
+#' @export 
 DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 25, plotDEG =T, multipleRegression=F, rowCounts=F, meanFilter=10, PDF=T, cname='temp' ) {
   try(dev.off(), silent = T)
 
-  is.installed(c('ggplot2', 'ggrepel'))
-  is.installed(c('limma', 'ComplexHeatmap'))
+#  is.installed(c('ggplot2', 'ggrepel'))
+#  is.installed(c('limma', 'ComplexHeatmap'))
 
   
   if(rowCounts) { Exp <- Exp[apply(Exp, 1, mean) > meanFilter, ]; Exp <- voom(Exp, plot = T) }
