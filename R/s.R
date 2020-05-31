@@ -59,7 +59,7 @@ loadUrl <- function(url, downloadPath = NA, sep=c("RData"," ", "," , "\t", ";", 
  
   } else { tmpFile <- file.path(getwd(), paste0(substr(Sys.time(), 1, 10), '.rda' ))  }
   url2 <- gsub("e=.*", "download=1", url)
-  download.file(url2, tmpFile)
+  download.file(url2, tmpFile, mode="wb") # wb: binary
   sep <- match.arg(sep)
   if(sep == "RData") {
     print(tmpFile)
@@ -82,7 +82,7 @@ loadUrl <- function(url, downloadPath = NA, sep=c("RData"," ", "," , "\t", ";", 
   justLoaded 
 }
 
-
+? download.file
 
 #' @export 
 browseEntrez <- function(entrezIDs) {
