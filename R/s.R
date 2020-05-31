@@ -61,7 +61,9 @@ loadUrl <- function(url, sep=c("RData"," ", "," , "\t", ";", "xls", "gsheet"), .
   download.file(url2,tmpFile)
   sep <- match.arg(sep)
   if(sep == "RData") {
+    print(tmpFile)
     tmpFile <-  gsub("\\", "/", tmpFile)
+    print(tmpFile)
     justLoaded <- try(load(tmpFile), silent = T); 
     try(assign(justLoaded, eval(as.symbol(justLoaded)),.GlobalEnv ), silent = T);
     if(class(justLoaded)=="try-error"){ justLoaded <- try(read.delim(tmpFile, ...), silent = T); message("Need 'sep' argument, is it txt file?")  }   
