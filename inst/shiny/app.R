@@ -2,6 +2,15 @@ shinyApp(
 ui<-fluidPage(sliderInput("iter", label="simCLT", min = 0, max = 1000, value = 50), plotOutput("plot")),
 
 server<-function(input, output){ 
+  my.clt.sim <- function(rd, iter=1000, n=10) {
+    par(mfrow=c(1,2))
+    for(i in names(rd)) {
+      hist( rd2<- replicate(iter, mean(sample( rd[[i]] , n))  ), main= paste0(i, '\n iter = ', iter, ', n = ', n ), xlab='',  probability = T  ) 
+      lines(density(rd2), col=2)
+    }
+    par(mfrow=c(1,1))
+  }
+  
   rd <- list(
     runif(100, 1, 100),
     rchisq(100, 3),
