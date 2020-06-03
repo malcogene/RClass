@@ -158,7 +158,7 @@ DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 
   try(dev.off(), silent = T)
   
   is.installed(c('ggplot2', 'ggrepel'))
-  is.installed(c('limma', 'ComplexHeatmap'))
+  is.installed.bioconductor(c('limma', 'ComplexHeatmap'))
   
   
   if(rowCounts) { Exp <- Exp[apply(Exp, 1, mean) > meanFilter, ]; Exp <- voom(Exp, plot = T) }
