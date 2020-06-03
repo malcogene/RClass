@@ -1,678 +1,105 @@
 ---
-always_allow_html: yes
-output:
-  html_document:
-    df_print: paged
-    highlight: textmate
-  pdf_document: default
+title: "<center> RClass </center> "
+author: 
+  - name: "<center> Sung Young Kim, MD, PhD^1^</center>"
+    affiliation: "<center> ^1^Department of Biochemistry, School of Medicine, Konkuk University</center> "
+output: 
+    html_document:
+        toc: true  
+        toc_float: 
+           collapsed: false
+        toc_depth: 3
 ---
-<!-- code_folding: show    df_print: paged -->
-<!---
-always_allow_html: yes 
-title: "C01"
-subtitle : '_Sung Young Kim, MD, PhD_^[mailto:palelamp@gmail.com]'
-author: "<u>Department of Biochemistry, School of Medicine, Konkuk University</u>"
+<!--   주석처리  toc:table of content    
+author: "Sung Young Kim, MD, PhD^[mailto:palelamp@gmail.com]</center>"
 date: "`r format(Sys.time(), '%d %B %Y')`"
-output: pdf_document
+output: 
+    html_document:
+        toc: TRUE  
+        toc_float: 
+           collapsed: false
+        toc_depth: 3
+        
+output: 
+    md_document:
+        variant: markdown_github
 -->
 
-
 <!--
-
-<body style="background-color:transparent" data-spy="scroll" data-target="#toc"><h4 data-toc-text="Title, Abstract & Keywords"></h4><div><center><font face='times'><h1>
-C01          
-</h1></font></center><p><center><a href = 'mailto:palelamp@gmail.com'><font color='#00000000'; font size='3'; font face='times'><i>Sung Young Kim, MD, PhD </i></font></a><br><font size='2'; font face='times'><i> Department of Biochemistry, School of Medicine, Konkuk University</i> </font></center><center><font size='2'; font face='times'><i> 
-August 21 2017
-</i></font></center></p><br><div class="dbox"><font face='times'>
-Modeling ....
-<br><br><i><b>Keywords</b></i>: 
-Box s M test; HE plots;  MANOVA;
-</font></div><h4 data-toc-text="Highlights"></h4><hr></div>
-<div class="container-fluid"><div class="row"><div class="col-sm-3"><nav id="toc" data-spy="affix" data-toggle="toc" data-offset="300" class="truncate"></nav></div><div class="col-sm-9">
-
-> - <font size='2'> highlight content 1 <b>[$y=ax+b+c$](#here)</b></font>  
-  - <font size='2'>  highlight content 2       </font>  
-  - <font size='2'>  highlight content 3   </font>
-  
-
---->
-
-
-
-<!--Graphical Abstract / Video Hightlights--><!--class="col-sm-3"--><!--class="img-fluid"-->
-<!--
-<div class="video-container"><iframe width="1280" height="720" src="https://www.youtube-nocookie.com/embed/vPEa0gNlxNI?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe></div>
-<center><a href="https://www.youtube-nocookie.com/embed/pe1ijjAOa4I?rel=0&amp;controls=0&amp;showinfo=0" data-toggle="lightbox" data-norelated> 
-<img src="https://unsplash.it/600.jpg?image=251"></a></center> 
- 
-<h4 data-toc-text="Introduction"></h4>  
-<font size='3'><b>Markdown </b></font> This[^1] is an <a href ="https://yihui.name/knitr/options/"> <b>knitr options</b></a><a href="http://haozhu233.github.io/kableExtra/awesome_table_in_html.html"> <b> table deco </b></a><br> &nbsp;  &nbsp;  inline  
-equation: $A = \pi*r^{2}$   
-<br> <a name="here"></a>
-<p>Arrow-left icon: <span class="glyphicon glyphicon-arrow-left"></span></p>    
-<p>Arrow-left icon as a link: <a href="#"><span class="glyphicon glyphicon-arrow-left"></span></a></p>
--->
-
-
-
-
-<!--
---->
-
-
-```{r setup-, include=F}
-knitr::opts_chunk$set(echo = T, comment='##', fig.align='center', error = F, message = F,  warning=F ) 
-# echo: whether to include R source code in the output file
-# include :  whether to include the chunk output in the final output document
-```
-<!--multipleplots, fig.width=3, fig.height=3, 
-<!-- HTML comment here : Hide comments: Lines that starts with `# ` will be removed but `## ` will be kept   cf. keep.comment = F in formatR package-->
-```{r setup-hook, echo=F}
-hook_in <- function(x, options) {
-    x <- x[!grepl("^#\\s+", x)]
-    paste0("```r\n",
-          paste0(x, collapse="\n"),
-          "\n```")
-}
-knitr::knit_hooks$set(source = hook_in)
-# formatR::tidy_app()
-```
-
-
-----
-
 This page provides the supplementary R code and data to reproduce the experiments in the following paper : **Accurate prediction of acquired EGFR TKIs resistance using a pathway-based individualized machine learning approach**  
-
-##### Sung Young Kim &nbsp;  _Department of Biochemistry, School of Medicine, Konkuk University_
+-->
 
 ----
 
-##### Data preparation / pre-processing and normalization <br>   
-
+##### **Main Dataset** <br> 
 * The main method function R file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
-* Preprocessed 8 study dataset can be downloaded from [here](http://centromics.org/info/142sup/EGFRTKIs_8set.RData)
+* Preprocessed dataset can be downloaded from [here](http://centromics.org/info/142sup/EGFRTKIs_8set.RData)
 * The pathways used for model construction can be downloaded from [here](http://centromics.org/info/142sup/p.KEGG.PID.BioCarta.RData)
 
+----
 
-```{r setup, echo=F, eval=F}
-## Set working directory
-getwd()
-setwd("./CA01/R/")
-rm(list=ls())
-options(stringsAsFactors = F)
+##### **Package Download**
+* Package source file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
 
-## Load the necessary functions
-source("./CA01_func.R")
 
-## Load the necessary libraries
-require('foreach')
-require('GEOquery')
-require('org.Hs.eg.db')
-require('affy')
-require('limma')
-require('glmnet')
-require('pROC')
-require('MetaDE')
-require('c060')
-require('ggplot2')
-require('plot3D')
+----
 
-## For parallel processing
-require('doParallel')
-## Register a parallel backend
-detectCores()
-cl <- makeCluster(detectCores()-1)
-registerDoParallel(cl)
-## stopCluster(cl)
+##### **Install Dependencies**
+* If don't have the R software installed in our computer, download and install it (check out the [R home page](http://www.r-project.org/))
+* Open the R command line interface, and install package dependencies (if they have not been installed yet):
+* Dependencies: R (>= 3.0.0), shiny (>= 0.8.0), WGCNA, igraph, shinyBS, RColorBrewer, Hmisc, psych, RJSONIO, whisker, yaml, pheatmap, preprocessCore, GO.db, AnnotationDbi, impute, and ggplot2
+
+
+```{r eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = T)) install.packages("BiocManager")
+BiocManager::install("limma")
+BiocManager::install("ComplexHeatmap")
+install.packages(c("ggplot2", "ggrepel", "WGCNA", "igraph", "Hmisc"))
 ```
-
-```{r Data Preprocessing, eval=F}
-## Set working directory
-getwd();
-workingDir = ".";
-setwd(workingDir);
-
-## Required libraries
-## All packages can be found at R (http://www.r-project.org/) or Bioconductor (https://www.bioconductor.org/) 
-
-require('doParallel')
-require('foreach')
-require('GEOquery')
-require('org.Hs.eg.db')
-require('hgu133a.db')
-require('hgu133acdf')
-require('affy')
-require('affycoretools')
-require('annotate')
-require('limma')
-require('glmnet')
-require('pROC')
-require('MetaDE')
-require('c060')
-require('ggplot2')
-
-## For parallel processing
-require('doParallel')
-## Register a parallel backend
-detectCores()
-cl <- makeCluster(detectCores()-1)
-registerDoParallel(cl)
-## stopCluster(cl)
-
-formatR::tidy_app() 
-
-
-## This supplementary file is organized in two files : main script R file and main method function R file.
-# file.remove("/var/www/html/info/142sup/mainFunctions.R")
-# file.copy("/home/plamp/C/C01/R/results/mainFunctions.R", "/var/www/html/info/142sup/mainFunctions.R")
-# file.copy("/home/plamp/C/C01/R/EGFRTKIs_8set.RData", "/var/www/html/info/142sup/EGFRTKIs_8set.RData")
-# file.copy("/home/plamp/C/C01/R/p.KEGG.PID.BioCarta.RData", "/var/www/html/info/142sup/p.KEGG.PID.BioCarta.RData")
-##  import the function source("mainFunctions.R") It contains all essential functions for analysis, statistics and classification.
-source("http://centromics.org/info/142sup/mainFunctions.R")
-## Load 8 study dataset 
-load(url("http://centromics.org/info/142sup/EGFRTKIs_8set.RData"))
-
-## Data Preparation.
-## Study cohort (and samples) selection.
-## ** the most time consuming step, but most important tasks in meta analysis **
-## Each study data set should first be carefully curated to include the suitable studies (and samples) that meet the criteria for a meta-analysis.
-
-## Pre-processing and normalization
-## Process particular dataset in R/Bioconductor.
-## For each study, data set were pre-processed using procedures outlined in a paper by Hughey et al.(2015)
-## For example, if study data type is affy_series_matrix or series_matrix, You can access the series_matrix information with the following code
-library('GEOquery')
-curr.study.cohort <- "GSEnumber"
-gsedat <- getGEO(curr.study.cohort), GSEMatrix=T) ## ## Get the dataset from GEO
-datExpr <- exprs(gsedat[[1]]) ## Expression data
-datMeta <- pData(phenoData(gsedat[[1]])) ## Phenotype data
-geneProbeInfo <- pData(featureData(gsedat[[1]])) ## Probe information .
-
-## Raw affy data processing
-## Download and Uncompress the CEL file
-getGEOSuppFiles("GSEnumber") # Platform information can be found in SOFT file, time consuming step!
-untar("GSEnumber_RAW.tar", exdir = "data")
-cels = list.files("data/", pattern = "cel") # or 'CEL'
-sapply(paste("data", cels, sep = "/"), gunzip)
-cels = list.files("data/", pattern = "cel")
-# RMA normalization (log2)
-raw.data = ReadAffy(verbose = F, filenames = cels, cdfname = "hgu133acdf")
-data.rma.norm = rma(raw.data) # After RMA processing, you should end up with an ExpressionSet object.
-# annotation
-eset <- annotateEset(data.rma.norm, hugene10sttranscriptcluster.db) 
-head(fData(eset))
-## For detailed step-by-step tutorial and R-script, please refer to the description by Hughey et al.   
-## (Download "Running your own meta-analysis.doc" from https://zenodo.org/record/16006)   
-
-## After obtained the list of study dataset, inter-quartile range (IQR) was used as the measure of variance of probe set. When multiple probe set (or probes) matched to an identical gene symbol, the probe set that presented the greatest inter-quartile range (IQR) was selected to represent the target gene symbol.
-IQR.match.list <- MetaDE::MetaDE.match(raw.list, "IQR")  # time consumming step
-# save(IQR.match.list , file="../data/pre.IQR.match.list.RData")
-## Merged by matching the entrez ID entities.
-ID.merged.list <-  MetaDE::MetaDE.merge(IQR.match.list)
-d.merged <- ID.merged.list
-
-## Download our pre-processed 8 study dataset here
-## Download "metaAnalysisFiles.tar.gz" from here, uncompress it. In this file is "metaAnalysisData.RData", which you need to load it into R:
-## Create the file directories
-## SaveDir is the path for saved data
-## OutputDir is the path for output result
-load(file.path(SaveDir,getwd(),"_count_table.txt")
-##  Read and quick look in the 8 study data set
-str(d.merged)
-
-## The expression data in the variable x, and the corresponding traits in the variable y
-browseGEOiter(names(d.merged))
-gsetLists.author.year = c("Gotoh N et al, 2011", "Guix M et al, 2008", "Stanam A et al, 2015", "Giles KM et al, 2013", "Zhang Z et al, 2012", "Hatakeyama H et al, 2010", "Lin WS et al, 2016", "Chung C et al, 2015") 
-gsetLists.author = gsub(" et al,.*", "", gsetLists.author.year)
-gsetLists.author.short = gsub("\\s.*", "", gsetLists.author.year)
-
+* Please, install versions 0.8.0 for shiny. <!--We are working to make the package compatible with the new versions of the packages as soon as possible.--> To install the recommended versions for shiny, just type the following commands on the R command-line:
+```{r eval = FALSE}
+if (!require("devtools")) install.packages("devtools")
+devtools::install_version("shiny", "0.8.0")
 ```
 
 
-Data splitting / configuration
-
-```{r Meta Leraning, eval=F}
-## Load preprocessed 8 study dataset
-load(url("http://centromics.org/info/142sup/EGFRTKIs_8set.RData"))
-seed = 29365917
-set.seed(seed)
-inx <- c(1, 3)
-inTraining <- NULL
-train <- NULL
-train.x <- NULL
-train.y <- NULL
-test <- NULL
-test.x <- NULL
-test.y <- NULL
-for (i in 1:length(inx)) {
-    inx.y <- d.merged[[inx[i]]][[2]]
-    set.seed(seed)
-    inTraining[[i]] <- caret::createDataPartition(inx.y, p = 0.7, list = F)
-    train.x[[i]] <- d.merged[[inx[i]]][[1]][, inTraining[[i]]]
-    train.y[[i]] <- d.merged[[inx[i]]][[2]][inTraining[[i]]]
-    train[[i]] <- list(x = train.x[[i]], y = train.y[[i]])
-    test.x[[i]] <- d.merged[[inx[i]]][[1]][, -inTraining[[i]]]
-    test.y[[i]] <- d.merged[[inx[i]]][[2]][-inTraining[[i]]]
-    test[[i]] <- list(x = test.x[[i]], y = test.y[[i]])
-    names(train)[i] <- sprintf("%s_train", names(d.merged[inx[i]]))
-    names(test)[i] <- sprintf("%s_test", names(d.merged[inx[i]]))
-}
-d.merged <- c(d.merged[-c(1, 3)], train, test)
-d.merged <- d.merged[c(7, 8, 1:6, 9, 10)]
-str(d.merged)
-
-## Dataset configuration / Variable Declaration
-study <- foreach(a = 1:length(d.merged), .combine = "c") %do% {
-    rep(names(d.merged)[a], length(d.merged[[a]][[2]]))
-}
-sample <- foreach(a = 1:length(d.merged), .combine = "c") %do% {
-    colnames(d.merged[[a]][[1]])
-}
-class <- foreach(a = 1:length(d.merged), .combine = "c") %do% {
-    d.merged[[a]][[2]]
-}
-class <- gsub("0", "C", class)
-class <- gsub("1", "E", class)
-ematList <- foreach(a = 1:length(d.merged)) %do% {
-    d.merged[[a]][[1]]
-}
-names(ematList) <- names(d.merged)
-if (any(rownames(ematList[[a]]) == "")) {
-    for (a in 1:length(ematList)) {
-        ematList[[a]] = ematList[[a]][-which(rownames(ematList[[a]]) == 
-            ""), ]
-    }
-}
-sampleMetadataTmp <- data.frame(study = as.character(study), sample = as.character(sample), 
-    class = as.factor(class), stringsAsFactors = F)
-str(ematList)
-discovery = c(1, 1, 1, 1, 1, 1, 1, 1, 0, 0)
-validation = 1 - discovery
-
-pdf.options(family = "Helvetica", useDingbats = F)
-studyMetadata <- data.frame(study = as.character(names(ematList)), discovery = discovery, 
-    validation = validation, stringsAsFactors = F)
-className = "class"
-classesTrain = c("C", "E")
-familyName = "binomial"
-intercept = TRUE
-rownames(studyMetadata) = studyMetadata[, "study"]
-studyMetadata[, "discovery"] = studyMetadata[, "discovery"] == 1
-studyMetadata[, "validation"] = studyMetadata[, "validation"] == 1
-rownames(sampleMetadataTmp) = sampleMetadataTmp[, "sample"]
-sampleMetadata = sampleMetadataTmp[sampleMetadataTmp[, "study"] %in% studyMetadata[, 
-    "study"], ]
-```
+----
 
 
-Cross study/sample normalization of training datasets
-```{r insel1, eval=F}
-## Cross-study normalization
-ematMergedDiscoveryAllClasses = mergeStudyData(ematList[studyMetadata[studyMetadata[,'discovery'],'study']], sampleMetadata=sampleMetadata, covariateName=NA)
-dim(ematMergedDiscoveryAllClasses)
-# select samples for discovery
-discoveryStudyNames = studyMetadata[studyMetadata[,'discovery'], 'study']
-idxDiscovery = (sampleMetadata[,'study'] %in% discoveryStudyNames) & (sampleMetadata[,className] %in% classesTrain)
-discoverySampleNames = rownames(sampleMetadata)[idxDiscovery]
-# make table of sample metadata and matrix of expression data for discovery samples
-sampleMetadataDiscovery = sampleMetadata[idxDiscovery,]
-sampleMetadataDiscovery[,className] = factor(sampleMetadataDiscovery[,className], levels=classesTrain)
-ematMergedDiscovery = ematMergedDiscoveryAllClasses[,sampleMetadataDiscovery[,'sample']]
-# construct foldid and weights for glmnet
-glmnetArgs = makeGlmnetArgs(sampleMetadataDiscovery)
+##### **Install package via Github (Recommended)**
 
-```
-
-Pathway mapping to a multiple-study cohort / PDS matrix generation
-
-```{r insel2, eval=F}
-load(url("http://centromics.org/info/142sup/p.KEGG.PID.BioCarta.RData"))
-pw.in <- p.KEGG.PID.BioCarta
-dim(pw.in)
-exp <- ematMergedDiscovery
-exp.cv.merged = exp[which(rownames(exp) %in% gene_ids), ]
-dim(exp)
-nor <- rep(F, dim(exp)[2])
-nor[which(colnames(exp) %in% sampleMetadata$sample[which(sampleMetadata$class == 
-    "C")])] <- T
-normal.cv.merged <- nor
-PDS.cv.result <- wrap.PDS(exp.cv.merged, rownames(exp.cv.merged), pw.in$entrez_gene_ids, 
-    pw.in$pathway, normal.cv.merged, attempts = 2, min_exp = -10, min_std = 0.4)
-PDSmatrix <- do.call(rbind.data.frame, PDS.cv.result$scores)
-colnames(PDSmatrix) <- colnames(exp)
-PDSmatrix <- as.matrix(PDSmatrix)
-print(dim(PDSmatrix))
-
-```
-
-Built a generalized predictive model 
-```{r insel3, eval=F}
-Exp. <- "LOSOCV"
-CVal = "LOSOCV"
-metaAnalysisName = file.path(getwd(), "results", Exp.)
-
-if (CVal == "LOOCV") {
-    # repeat=1, LOOCV
-    seed = 29365917
-    set.seed(seed)
-    epsgo.pds.cvFitList <- cv.merged(PDSmatrix, sampleMetadata, yName = className, 
-        weights = glmnetArgs$weights, nRepeats = 1, nFolds = ncol(PDSmatrix), 
-        alphas = alphas, family = familyName, intercept = intercept, keep = TRUE, 
-        seed = seed, GlobalOp = "epsgo", type.measure = "deviance", type.min = "lambda.1se", 
-        standardize = F)
-    sumfit <- summary(epsgo.pds.cvFitList, verbose = TRUE)
-    plot(sumfit)
-    
-    alpha = sumfit$opt.alpha
-    cvFit = sumfit$opt.models$model$cvreg
-    fitResult = cvFit$glmnet.fit
-    lambda = sumfit$opt.lambda
-} else {
-    
-    # LOSOCV
-    seed = 29365917
-    set.seed(seed)
-    epsgo.pds.cvFitList <- cv.merged(PDSmatrix, sampleMetadata, yName = className, 
-        weights = glmnetArgs$weights, foldid = glmnetArgs$foldid, alphas = alphas, 
-        family = familyName, intercept = intercept, keep = TRUE, GlobalOp = "epsgo", 
-        type.measure = "deviance", standardize = F, type.min = "lambda.lse")
-    sumfit <- summary(epsgo.pds.cvFitList, verbose = TRUE)
-    plot(sumfit)
-    
-    alpha = sumfit$opt.alpha
-    cvFit = sumfit$opt.models$model$cvreg
-    fitResult = cvFit$glmnet.fit
-    lambda = sumfit$opt.lambda
-}
-
-## Plot the coefficients vs. lambda
-plotCvError(cvFit, metaAnalysisName = metaAnalysisName, size = 0.4, ggplotArgs = list(theme_bw()))
-
-## Plot the coeffs vs. lambda
-pdf(file = sprintf("%s_lambda_coef.pdf", metaAnalysisName), width = 6, 
-    height = 6)
-plot(fitResult, xvar = "lambda", cex.lab = 1.3, xlim = c(-7, 4), label = T)
-dev.off()
-writeCoefficients(fitResult, lambda = lambda, metaAnalysisName = metaAnalysisName)
-
-coefDf = makeCoefDf(coef(fitResult, s = lambda), decreasing = FALSE, classLevels = classesTrain)
-coefDf = coefDf[coefDf[, "geneId"] != "(Intercept)", ]
-geneIdOrder = coefDf[, "geneId"]
-coefDf
-
-## plot the coeffs
-.w.plotCoefficients(fitResult, lambda = lambda, classLevels = classesTrain, 
-    geneIdOrder = geneIdOrder, metaAnalysisName = metaAnalysisName, width = 15, 
-    height = 2.7 * length(coefDf), ggplotArgs = list(scale_fill_brewer(type = "qual", 
-        palette = 3), scale_y_continuous(breaks = c(-0.5, -0.3, 0, 0.3, 
-        0.5)), theme_bw()), PDS = T)
-
-# plot the expression of selected genes in the discovery set
-annoNames = c("study", "class")
-annoLevels = list(studyMetadata[studyMetadata[, "discovery"], "study"], 
-    classesTrain)
-names(annoLevels) = annoNames
-annoColors = list(brewer.pal(4, "Paired"))
-names(annoColors) = "class"
-names(annoColors[[1]]) = classesTrain
-
-# For PDS topTable
-colnames(PDSmatrix) == sampleMetadata$sample[which(sampleMetadata$sample %in% 
-    discoverySampleNames)]
-PDSmatrix.stat <- PDSmatrix
-dim(PDSmatrix)
-
-require(limma)
-limma::plotMDS(PDSmatrix.stat)
-x = PDSmatrix.stat
-y <- as.factor(sampleMetadata$class[which(sampleMetadata$sample %in% discoverySampleNames)])
-design <- model.matrix(~0 + y)
-fit = eBayes(lmFit(x, design))
-topTable(fit)
-contrast.matrix <- makeContrasts(yE - yC, levels = design)
-fit2 <- eBayes(contrasts.fit(fit, contrast.matrix))
-pds.tT <- topTable(fit2, number = 100, sort.by = "p")
-pds.tT
-pds.tT.20 <- topTable(fit2, number = 20, sort.by = "p")
-pds.tT.20
-pds.tT.20.FC <- topTable(fit2, number = 20, resort.by = "logFC")
-pds.tT.20.FC
-pds.tT.totall <- topTable(fit2, number = dim(PDSmatrix)[1], sort.by = "p")
-pds.tT.totall
-pds.tT.totall.FDRcut <- pds.tT.totall[pds.tT.totall[, "adj.P.Val"] <= 0.05, 
-    ]
-pds.tT.totall.FDRcut
-pds.tT.list <- list(pds.tT = pds.tT, pds.tT.20 = pds.tT.20, pds.tT.20.FC = pds.tT.20.FC, 
-    pds.tT.totall = pds.tT.totall, pds.tT.totall.FDRcut = pds.tT.totall.FDRcut)
-res.t = sprintf("%s_tT.RData", Exp.)
-res.t.path = file.path(getwd(), "results", res.t)
-save(pds.tT.list, file = res.t.path)
-
-.w.pds.plotExpressionHeatmapMerged(fitResult, lambda, PDSmatrix, sampleMetadata, 
-    annoNames, annoLevels, annoColors, clusterSamplesTogether = F, geneIdOrder = geneIdOrder, 
-    className = className, classLevels = classesTrain, metaAnalysisName = metaAnalysisName, 
-    width = 0.08 * length(sampleMetadata$sample), height = 2 * length(coefDf), 
-    fontsize_row = 6) 
-```
-
-Internal cross-study validation
-```{r insel4, eval=F}
-
-## write confusion matrix for cross-validation
-.w.writeConfusionCrossValidation(cvFit, lambda = lambda, ematMerged = PDSmatrix, 
-    sampleMetadata = sampleMetadata, className = className, classLevels = classesTrain, 
-    metaAnalysisName = metaAnalysisName)
-
-roc.obj <- roc(cv.trueClasses, cvProb[, 2], direction = "<")
-plot.roc(smooth(roc.obj, "density"), main = "", ci = F, percent = T, of = "thresholds", 
-    thresholds = "best", print.auc = T)
-plot.roc(cv.trueClasses, cvProb[, 2], direction = "<", percent = F, ci = T, 
-    print.auc = T)
-
-cv <- new("binary", trueclass = as.numeric(cv.trueClasses) - 1, predclass = as.numeric(cv.predsFactor) - 
-    1, predprob = cvProb[, 2])
-cv.statistics <- round(as.data.frame(c(AUROC = AUC(cv), BRIER = brier(cv), 
-    APRFMscore(cv)), drop = F), 3)
-rownames(cv.statistics) <- "CV_statistics"
-cv.statistics
-
-## Plot the class probabilities for CV
-ddf = NULL
-.w.plotClassProbsCrossValidation(cvFit, lambda, sampleMetadata, discoveryStudyNames, 
-    discoverySampleNames, className, classesTrain, metaAnalysisName, size = 3, 
-    width = 5, height = 2.5 * length(discoveryStudyNames), ggplotArgs = list(scale_color_brewer(type = "qual", 
-        palette = 3), scale_shape_manual(values = c(6, 17)), theme_complete_bw(), 
-        theme(legend.title = element_blank(), strip.background = element_rect(colour = "transparent", 
-            fill = "transparent"), axis.text.x = element_text(size = 15), 
-            text = element_text(size = 20))))
-```
-
-External validation
-```{r insel5, eval=F}
-## Independent blind set validation
-predsPDSList = PDS.predictValidationData(ematList, studyMetadata, sampleMetadata, 
-    discoverySampleNames, classesTrain, alpha = alpha, lambda = lambda, 
-    weights = glmnetArgs$weights, covariateName = NA, className = className, 
-    familyName = familyName, intercept = intercept)
-
-.w.writeConfusionValidation(predsPDSList, lambda = lambda, sampleMetadata = sampleMetadata, 
-    className = className, classLevels = classesTrain, metaAnalysisName = metaAnalysisName, 
-    familyName = familyName)
-
-.w.writeConfusionValidationEach(predsPDSList, lambda = lambda, sampleMetadata = sampleMetadata, 
-    className = className, classLevels = classesTrain, metaAnalysisName = metaAnalysisName, 
-    familyName = familyName)
-each.val
-
-.w.plotClassProbsValidation(predsPDSList, sampleMetadata, className, classesTrain, 
-    metaAnalysisName, familyName = familyName, classesTrain = classesTrain, 
-    size = 3, width = 6, height = 2.5 * dim(studyMetadata[which(studyMetadata[, 
-        "validation"] == T), ])[1], ggplotArgs = list(scale_color_brewer(type = "qual", 
-        palette = 3), scale_x_continuous(breaks = scales::pretty_breaks(n = 3)), 
-        theme_complete_bw(), scale_shape_manual(values = c(6, 17)), theme(legend.title = element_blank(), 
-            strip.background = element_rect(colour = "transparent", fill = "transparent"), 
-            axis.text.x = element_text(size = 15), text = element_text(size = 20))))
-
-```
-
-
-ROC and performance matrics
-```{r insel6, eval=F}
-## category & each study statistics AUROC, Brier score (BRIER), accuracy
-## (ACC), precision, recall, F1-score and MCC
-each.val.study <- lapply(each.val, function(x) {
-    new("binary", trueclass = as.numeric(x[, 2]) - 1, predclass = as.numeric(x[, 
-        1]) - 1, predprob = as.numeric(x[, 3]))
-})
-each.val.statistics <- round(do.call(rbind, lapply(each.val.study, function(x) {
-    aprfm <- unlist(APRFMscore(x))
-    data.frame(AUROC = AUC(x), BRIER = brier(x), ACC = aprfm[1], precision = aprfm[2], 
-        recall = aprfm[3], F1 = aprfm[4], MCC = aprfm[5])
-})), 3)
-F.beta.score(each.val.study[[1]])(2)
-F.beta.score(each.val.study[[1]])(1)
-
-external.overall <- lapply(list(external.overall = do.call(rbind, each.val)), 
-    function(x) {
-        new("binary", trueclass = as.numeric(x[, 2]) - 1, predclass = as.numeric(x[, 
-            1]) - 1, predprob = as.numeric(x[, 3]))
-    })
-
-external.overall.statistics <- round(do.call(rbind, lapply(external.overall, 
-    function(x) {
-        aprfm <- unlist(APRFMscore(x))
-        data.frame(AUROC = AUC(x), BRIER = brier(x), ACC = aprfm[1], precision = aprfm[2], 
-            recall = aprfm[3], F1 = aprfm[4], MCC = aprfm[5])
-    })), 3)
-F.beta.score(each.val.study[[1]])(2)
-F.beta.score(each.val.study[[1]])(1)
-
-external.trueClasses <- do.call(c, lapply(each.val, "[", , 2))
-external.Prob <- do.call(c, lapply(each.val, "[", , 3))
-roc.obj.cv <- roc(cv.trueClasses, cvProb[, 2], direction = "<")
-roc.obj.external <- roc(external.trueClasses, external.Prob, direction = "<")
-
-cv.external.roc <- function(...) {
-    op <- par(no.readonly = T)
-    par(mfrow = c(1, 2))
-    plot.roc(smooth(roc.obj.cv, "density"), main = "", ci = F, percent = T, 
-        of = "thresholds", thresholds = "best", print.auc = T)
-    plot.roc(smooth(roc.obj.external, "density"), main = "", ci = F, percent = T, 
-        of = "thresholds", thresholds = "best", add = T, print.auc = T, 
-        print.auc.y = 0.4, col = 2)
-    plot.roc(cv.trueClasses, cvProb[, 2], direction = "<", percent = F, 
-        ci = T, print.auc = T)
-    plot.roc(external.trueClasses, external.Prob, direction = "<", percent = F, 
-        ci = T, print.auc = T, add = T, print.auc.y = 0.4, col = 2)
-    par(op)
-}
-cv.external.roc()
+To install the latest version of package via Github, run following commands in R:
+```{r eval = FALSE}
+devtools::install_github("malcogene/RClass")
 ```
 
 
 
-
-
-
-<!--
-### Universal comments
-specifies the required objects and parameter values for optimizing the tuning parameters of the elastic net Cox model. 
-The wrapper function tune.glmnet.interval calculates the (partial) log-likelihood deviance of a model with given tuning parameter setting (α, λ).
-
-#### Simulation {.tabset .tabset-fade}
-##### CLT
-sdfdfsdf
-
-##### TTT
-sdfsdf
-
-
-### Sales Report {.tabset .tabset-fade .tabset-pills}
-#### By Product
-#### By Region
--->
+----
 
 
 
 
+##### **Install package from the source**
+
+- **Linux/Mac OS**
+    - Download the package *.tar.gz.
+    - Open a command prompt. then:
+```{r eval = FALSE}
+install.packages(path_of_the_downloaded_file, repos = NULL, type="source")
+```
+
+- **Windows**
+    - Start by reviewing the section on Windows packages in [the R Installation and Administration manual](https://cran.r-project.org/doc/manuals/R-admin.html), then carefully follow the instructions from [The Windows toolset appendix](https://cran.r-project.org/doc/manuals/R-admin.html#The-Windows-toolset).
+    - Download the package *.tar.gz.
+    - Make sure you have [Rtools](https://cran.r-project.org/bin/windows/Rtools/) installed.
+    - Open a command prompt. then:
+```{r eval = FALSE}
+install.packages(path_of_the_downloaded_file, repos = NULL, type="source")
+```
 
 
-</div></div></div>
-[^1]: footprint test
-
-<!-- output:    html_document:      toc: false 
---->
-<!-- PDF reference    bibliography: mybibfile.bib -->
-<link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.css"> 
-<script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.js"></script> 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.min.css">
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.2.0/ekko-lightbox.min.js"></script> --><script src="http://210.119.218.27/Sup/modifiedyoutube.js"></script> 
-
-<style type="text/css">nav[data-toggle='toc'] {margin-top: 8px;}
-/* small screens */ @media (max-width: 768px) {nav.affix[data-toggle='toc'] { position: static; }
-nav[data-toggle='toc'] .nav .active .nav {display: none;}
-nav[data-toggle='toc'] .nav .nav {display: block;}}
-.affix {top: 7px; -webkit-transition: all 3s ease-in; transition: all .8s ease-in-out;}
-.dbox {width:80%; margin-left: auto; margin-right: auto;}
-.truncate {width: 225px; white-space: wrap; overflow: hidden; text-overflow: ellipsis;}
-.video-container{position:relative;padding-bottom:56.25%;padding-top:0;height:0;overflow:hidden;}
-.video-container iframe,.video-container object,.video-container embed{position:absolute; top:0; left:0; width:100%; height:100%;}</style> 
-<script> $(function() {var navSelector = '#toc'; var $myNav = $(navSelector);$('body').scrollspy({
-    target: navSelector});</script>
-<script>Toc.init({$nav: $('#myNav'), // ...});</script>
-<script> $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-    event.preventDefault(); $(this).ekkoLightbox();});</script>
-<script>$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});</script>
-
-<!-- <style type="text/css"> body{ font-size: 12px;font-family: "Times New Roman", Times;} 
-td {  /* Table  */ font-size: 9px; font-family: "Times New Roman", Times; } </style>-->
-<!--<iframe src="https://tympanus.net/Development/PageTransitions/" style="border: none; width: 100%; height: 100px" frameborder="0"></iframe>
-<!--<video width=100% height="380" controls>
-<source src="http://210.119.218.27/Sup/MyMovie.mp4" type="video/mp4"></video><br>-->
-<!--<div class="video-container"><iframe width="480" height="270" src="https://www.youtube.com/embed/pe1ijjAOa4I" frameborder="0" allowfullscreen></iframe></div> 
-<center><div class="s9 imgborder"><img src="http://placehold.it/1900x1080&amp;text=Slide Two" class="img-thumbnail" alt="Responsive image" ></div></center>
--->
-<!--http://ashleydw.github.io/lightbox/       You should set your videos to "unlisted" instead of "private". That way the video does not show up on your channel or on any search results but anyone with a link to the video can see it and you can embed the video on any site.
---->
-
-
-
-</body>
-
-
-
-
-<!--
-
-<div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://palelamp.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
--->
+----
 
 
 
@@ -681,16 +108,5 @@ s.setAttribute('data-timestamp', +new Date());
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 
