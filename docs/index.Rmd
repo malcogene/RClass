@@ -5,7 +5,7 @@ author:
     affiliation: "<center> ^1^Department of Biochemistry, School of Medicine, Konkuk University</center> "
 output: 
     html_document:
-        toc: true  
+        toc: false  
         toc_float: 
            collapsed: false
         toc_depth: 3
@@ -15,7 +15,7 @@ author: "Sung Young Kim, MD, PhD^[mailto:palelamp@gmail.com]</center>"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: 
     html_document:
-        toc: TRUE  
+        toc: false  
         toc_float: 
            collapsed: false
         toc_depth: 3
@@ -31,20 +31,20 @@ This page provides the supplementary R code and data to reproduce the experiment
 
 ----
 
-##### **Main Dataset** <br> 
+### Main Dataset <br> 
 * The main method function R file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
 * Preprocessed dataset can be downloaded from [here](http://centromics.org/info/142sup/EGFRTKIs_8set.RData)
 * The pathways used for model construction can be downloaded from [here](http://centromics.org/info/142sup/p.KEGG.PID.BioCarta.RData)
 
 ----
 
-##### **Package Download**
+### Package Download
 * Package source file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
 
 
 ----
 
-##### **Install Dependencies**
+### Install Dependencies
 * If don't have the R software installed in our computer, download and install it (check out the [R home page](http://www.r-project.org/))
 * Open the R command line interface, and install package dependencies (if they have not been installed yet):
 * Dependencies: R (>= 3.0.0), shiny (>= 0.8.0), WGCNA, igraph, shinyBS, RColorBrewer, Hmisc, psych, RJSONIO, whisker, yaml, pheatmap, preprocessCore, GO.db, AnnotationDbi, impute, and ggplot2
@@ -66,21 +66,17 @@ devtools::install_version("shiny", "0.8.0")
 ----
 
 
-##### **Install package via Github (Recommended)**
+### Install package via Github (Recommended)
 
 To install the latest version of package via Github, run following commands in R:
 ```{r eval = FALSE}
 devtools::install_github("malcogene/RClass")
 ```
 
-
-
 ----
 
 
-
-
-##### **Install package from the source**
+### Install package from the source
 
 - **Linux/Mac OS**
     - Download the package *.tar.gz.
