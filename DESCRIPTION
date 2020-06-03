@@ -8,14 +8,16 @@ Authors@R:
            email = "palelamp@kku.ac.kr")
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+Depends: 
+    R (>= 3.5.1)
+Imports: 
+    ggplot2,
+    ggrepel,
+    shiny
+Suggests: 
+    ComplexHeatmaps,
+    limma
 bioViews: 
 Encoding: UTF-8
+ImportsFrom: 
 LazyData: true
-RoxygenNote: 6.1.1
-Imports: 
-    shiny,
-    ggplot2,
-    ggrepel
-
-
-

@@ -1,31 +1,29 @@
 
 # http://r-pkgs.had.co.nz/check.html    # importFrom limma plotMDS
-#' @name AppUI
-#' @title Launch interactive User Interface
-#' @description  AppUI initiates in the web browser an interactive user interface of ...  This user interface enables users to easily perform nearly all standard ... functions in ... package.
-#' @usage AppUI()
-#' @param sfPower numerical value of ... for
-#' @return A user interface will be shown in users' default web browser.
-#' @import shiny ggplot2 ggrepel     
-#' @export 
+options(stringsAsFactors = FALSE)  
+
 AppUI <- function() {
   currentfilePath <- dirname(rstudioapi::getSourceEditorContext()$path)
   pkgname <-(pkg <- strsplit(currentfilePath, '/'))[[1]][length(pkg[[1]])-1]; pkgname 
   shiny::runApp(system.file("shiny", package=pkgname))} #
+#' @name appUI
+#' @title Launch interactive User Interface
+#' @description  AppUI initiates in the web browser an interactive user interface of ...  This user interface enables users to easily perform nearly all standard ... functions in ... package.
+#' @usage appUI()
+#' @param sfPower numerical value of ... for
+#' @return A user interface will be shown in users' default web browser.
+#' @import shiny ggplot2 ggrepel  
+#' @export 
 appU <- function() { loc <- gsub('.*:', '', getAnywhere("AppUI")$where[1]) 
   shiny::runApp(system.file("shiny", package=loc))  }
 
 
-options(stringsAsFactors = FALSE)
 
-
-
- 
 #' @export 
 is.installed <- function(RequiredPackages) {
   pinx <- which(RequiredPackages %in% installed.packages()[,1])
   if(length(pinx) !=0) {RequiredPackages<- RequiredPackages[-which(RequiredPackages %in% installed.packages()[,1])] }; RequiredPackages 
-  Inx <- readline(prompt= sprintf("\nThis function needs %s package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return", RequiredPackages) );
+  Inx <- readline(prompt= sprintf("\nThis function needs %s package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return:\n\n", RequiredPackages) );
   if( Inx == 'y' || Inx == 'Y' ) {
   for (i in RequiredPackages) { # Installs packages if not yet installed
    # if (!is.element(i, installed.packages()[,1]))  
@@ -59,12 +57,11 @@ loadUrl <- function(url, downloadPath = NA, sep=c("RData"," ", "," , "\t", ";", 
  
   } else { tmpFile <- file.path(getwd(), paste0(substr(Sys.time(), 1, 10), '.rda' ))  }
   url2 <- gsub("e=.*", "download=1", url)
-  download.file(url2, tmpFile, mode="wb") # wb: binary
+  download.file(url2, tmpFile, mode="wb") # For windows user: mode = "wb" cf. binary
   sep <- match.arg(sep)
   if(sep == "RData") {
     print(tmpFile)
     tmpFile <-  gsub("\\\\", "/", tmpFile)
-    print(tmpFile)
     justLoaded <- try(load(tmpFile), silent = T); 
     try(assign(justLoaded, eval(as.symbol(justLoaded)),.GlobalEnv ), silent = T);
     if(class(justLoaded)=="try-error"){ justLoaded <- try(read.delim(tmpFile, ...), silent = T); message("Need 'sep' argument, is it txt file?")  }   
@@ -82,7 +79,7 @@ loadUrl <- function(url, downloadPath = NA, sep=c("RData"," ", "," , "\t", ";", 
   justLoaded 
 }
 
-? download.file
+
 
 #' @export 
 browseEntrez <- function(entrezIDs) {
