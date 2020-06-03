@@ -24,16 +24,20 @@ is.installed <- function(RequiredPackages) {
   RequiredPackages = c('ggplot2', 'ggrepel')
   
   pinx <- which(RequiredPackages %in% installed.packages()[,1])
-  if(length(pinx) !=0) {RequiredPackages<- RequiredPackages[-which(RequiredPackages %in% installed.packages()[,1])] };
-  if(length(RequiredPackages) !=0) {
-  Inx <- readline(prompt= sprintf("\nThis function needs %s package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return:\n\n", RequiredPackages) );
+  if(length(pinx) !=0) {installPackages<- RequiredPackages[-pinx] };
+  if(length(installPackages) !=0) {
+  Inx <- readline(prompt= sprintf("\nThis function needs %s package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return:\n\n", installPackages) );
   if( Inx == 'y' || Inx == 'Y' ) {
-    for (i in RequiredPackages) { # Installs packages if not yet installed
+    for (i in installPackages) { # Installs packages if not yet installed
       # if (!is.element(i, installed.packages()[,1]))  
       install.packages(i)
       require(i, character.only = T)
       # }
     } } else { stop() } 
+  } else {
+    for (i in RequiredPackages) {
+      require(i, character.only = T)
+     }  
   }
   }
 
@@ -48,11 +52,12 @@ is.installed <- function(RequiredPackages) {
 #' @export 
 is.installed.bioconductor <- function(RequiredPackages) {
   pinx <- which(RequiredPackages %in% installed.packages()[,1])
-  if(length(pinx) !=0) {RequiredPackages<- RequiredPackages[-which(RequiredPackages %in% installed.packages()[,1])] }
-  if(length(RequiredPackages) !=0) {
-  Inx <- readline(prompt= sprintf("\nThis function needs %s bioconductor package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return", RequiredPackages) );
+  pinx <- which(RequiredPackages %in% installed.packages()[,1])
+  if(length(pinx) !=0) {installPackages<- RequiredPackages[-pinx] };
+  if(length(installPackages) !=0) {
+  Inx <- readline(prompt= sprintf("\nThis function needs %s bioconductor package(s). Whould you like to install?\n\nEnter Y or an empty line to skip install and return", installPackages) );
   if( Inx == 'y' || Inx == 'Y' ) {
-    for (i in RequiredPackages) { # Installs packages if not yet installed
+    for (i in installPackages) { # Installs packages if not yet installed
       # if (!is.element(i, installed.packages()[,1])) {
       if (!requireNamespace("BiocManager", quietly = TRUE))
         install.packages("BiocManager")
@@ -60,6 +65,10 @@ is.installed.bioconductor <- function(RequiredPackages) {
       require(i, character.only = T)
       # }
     } } else { stop() }
+  } else {
+    for (i in RequiredPackages) {
+      require(i, character.only = T)
+    }  
   }
   }
 
