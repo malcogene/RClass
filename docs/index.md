@@ -3,8 +3,8 @@ author: "Sung Young Kim, MD, PhD^[mailto:palelamp@gmail.com]</center>"
 date: "03 June 2020"
 output: 
     html_document:
-        toc: TRUE  
-        toc_float: TRUE
+        toc: false  
+        toc_float: 
            collapsed: false
         toc_depth: 3
         
@@ -18,7 +18,7 @@ This page provides the supplementary R code and data to reproduce the experiment
 
 ------------------------------------------------------------------------
 
-##### **Main Dataset** <br>
+> Main Dataset
 
 -   The main method function R file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
 -   Preprocessed dataset can be downloaded from [here](http://centromics.org/info/142sup/EGFRTKIs_8set.RData)
@@ -26,13 +26,13 @@ This page provides the supplementary R code and data to reproduce the experiment
 
 ------------------------------------------------------------------------
 
-##### **Package Download**
+> Package Download
 
 -   Package source file can be downloaded from [here](http://centromics.org/info/142sup/mainFunctions.R)
 
 ------------------------------------------------------------------------
 
-##### **Install Dependencies**
+> Install Dependencies
 
 -   If don't have the R software installed in our computer, download and install it (check out the [R home page](http://www.r-project.org/))
 -   Open the R command line interface, and install package dependencies (if they have not been installed yet):
@@ -54,7 +54,7 @@ devtools::install_version("shiny", "0.8.0")
 
 ------------------------------------------------------------------------
 
-##### **Install package via Github (Recommended)**
+> Install package via Github (Recommended)
 
 To install the latest version of package via Github, run following commands in R:
 
@@ -64,7 +64,7 @@ devtools::install_github("malcogene/RClass")
 
 ------------------------------------------------------------------------
 
-##### **Install package from the source**
+> Install package from the source
 
 -   **Linux/Mac OS**
     -   Download the package \*.tar.gz.

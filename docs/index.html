@@ -151,24 +151,25 @@ output:
 This page provides the supplementary R code and data to reproduce the experiments in the following paper : **Accurate prediction of acquired EGFR TKIs resistance using a pathway-based individualized machine learning approach**  
 -->
 <hr />
-<div id="main-dataset" class="section level3">
-<h3>Main Dataset <br></h3>
+<blockquote>
+<p>Main Dataset</p>
+</blockquote>
 <ul>
 <li>The main method function R file can be downloaded from <a href="http://centromics.org/info/142sup/mainFunctions.R">here</a></li>
 <li>Preprocessed dataset can be downloaded from <a href="http://centromics.org/info/142sup/EGFRTKIs_8set.RData">here</a></li>
 <li>The pathways used for model construction can be downloaded from <a href="http://centromics.org/info/142sup/p.KEGG.PID.BioCarta.RData">here</a></li>
 </ul>
 <hr />
-</div>
-<div id="package-download" class="section level3">
-<h3>Package Download</h3>
+<blockquote>
+<p>Package Download</p>
+</blockquote>
 <ul>
 <li>Package source file can be downloaded from <a href="http://centromics.org/info/142sup/mainFunctions.R">here</a></li>
 </ul>
 <hr />
-</div>
-<div id="install-dependencies" class="section level3">
-<h3>Install Dependencies</h3>
+<blockquote>
+<p>Install Dependencies</p>
+</blockquote>
 <ul>
 <li>If don’t have the R software installed in our computer, download and install it (check out the <a href="http://www.r-project.org/">R home page</a>)</li>
 <li>Open the R command line interface, and install package dependencies (if they have not been installed yet):</li>
@@ -184,15 +185,15 @@ install.packages(c(&quot;ggplot2&quot;, &quot;ggrepel&quot;, &quot;WGCNA&quot;, 
 <pre class="r"><code>if (!require(&quot;devtools&quot;)) install.packages(&quot;devtools&quot;)
 devtools::install_version(&quot;shiny&quot;, &quot;0.8.0&quot;)</code></pre>
 <hr />
-</div>
-<div id="install-package-via-github-recommended" class="section level3">
-<h3>Install package via Github (Recommended)</h3>
+<blockquote>
+<p>Install package via Github (Recommended)</p>
+</blockquote>
 <p>To install the latest version of package via Github, run following commands in R:</p>
 <pre class="r"><code>devtools::install_github(&quot;malcogene/RClass&quot;)</code></pre>
 <hr />
-</div>
-<div id="install-package-from-the-source" class="section level3">
-<h3>Install package from the source</h3>
+<blockquote>
+<p>Install package from the source</p>
+</blockquote>
 <ul>
 <li><strong>Linux/Mac OS</strong>
 <ul>
@@ -212,7 +213,6 @@ devtools::install_version(&quot;shiny&quot;, &quot;0.8.0&quot;)</code></pre>
 </ul>
 <pre class="r"><code>install.packages(path_of_the_downloaded_file, repos = NULL, type=&quot;source&quot;)</code></pre>
 <hr />
-</div>
 
 
 
