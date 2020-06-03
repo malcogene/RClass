@@ -1,4 +1,5 @@
-ui<-fluidPage(sliderInput("iter", label="simCLT", min = 0, max = 1000, value = 50), plotOutput("plot"))
+shinyApp(
+ui<-fluidPage(sliderInput("iter", label="simCLT", min = 0, max = 1000, value = 50), plotOutput("plot")),
 
 server<-function(input, output){ 
   rd <- list(
@@ -18,3 +19,4 @@ server<-function(input, output){
     
     
   }) }
+)
