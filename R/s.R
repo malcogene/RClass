@@ -154,7 +154,7 @@ normalize.q <- function(x= data.frame(matrix(sample(12, replace = T), 4)), filte
 
 
 #' @export 
-DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 25, plotDEG =T, multipleRegression=F, rowCounts=F, meanFilter=10, PDF=T, cname='temp', show_column_names=T ) {
+DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 25, plotDEG =T, multipleRegression=F, rowCounts=F, meanFilter=10, PDF=T, cname='temp') {
   try(dev.off(), silent = T)
   
   is.installed(c('ggplot2', 'ggrepel'))
@@ -202,7 +202,7 @@ DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 
       colTemp<-list(colTemp); names(colTemp) <- colnames(cl)[1] 
       
 
-      h <- Heatmap( t(scale(t(d<-Exp[rbind(tT.up[1:heatmapUpN, ], tT.down[heatmapUpN:1, ])$Gene,]))),  col = bluered, name="Exprs", rect_gp = gpar(col = "gray12", lty = 1, lwd = 0.2), cluster_rows = T, cluster_columns = T, show_row_names = T, show_column_names=show_column_names, row_names_gp =gpar(fontsize = 5),   split = data.frame(cyl = factor(c(rep('UP', heatmapUpN), rep('DOWN', heatmapUpN)), levels=c('UP','DOWN' ))),gap = unit(1.5, "mm"), top_annotation = HeatmapAnnotation(df=cl, col=colTemp, show_annotation_name = T, annotation_name_gp = gpar(fontsize = 7), annotation_name_side ='left', annotation_height=c(1.5) ) ) 
+      h <- Heatmap( t(scale(t(d<-Exp[rbind(tT.up[1:heatmapUpN, ], tT.down[heatmapUpN:1, ])$Gene,]))),  col = bluered, name="Exprs", rect_gp = gpar(col = "gray12", lty = 1, lwd = 0.2), cluster_rows = T, cluster_columns = T, show_row_names = T, row_names_gp =gpar(fontsize = 5),   split = data.frame(cyl = factor(c(rep('UP', heatmapUpN), rep('DOWN', heatmapUpN)), levels=c('UP','DOWN' ))),gap = unit(1.5, "mm"), top_annotation = HeatmapAnnotation(df=cl, col=colTemp, show_annotation_name = T, annotation_name_gp = gpar(fontsize = 7), annotation_name_side ='left', annotation_height=c(1.5) ) ) 
 
       pre.h<<-h
       draw(h)
