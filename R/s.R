@@ -215,4 +215,44 @@ DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 
   }
 
 
+                                                         
+                                                         
+RP.custom <- function(s,FDRcutoff=.1) {
+  
+  is.installed(c('RankProd'))
+
+  for(i in 1: length(s)) { s[[i]]$y <- as.numeric(as.factor(s[[i]]$y[,1]))-1 
+  rownames(s[[i]]$x) <-  gsub("///.*", "", rownames(s[[i]]$x))
+  }  
+  mainTitle = sprintf("   %s and %s others", names(s)[1], (length(s)-1) )
+  if(length(do.call("c", lapply(s, function(x)x$y))) >= 100) { RandomPairs = 100} else { RandomPairs = NA
+  }; RandomPairs
+    tt <-list(); tt.origin <-c(); tt.cl<-c()
+  for( i in  1: length(s))
+  { tt[[i]] <- s[[i]][[1]] 
+  tt.origin <- c(tt.origin , rep(i, dim(s[[i]][[1]])[2] ))
+  tt.cl <- c(tt.cl, s[[i]]$y)
+  }
+  ttt <- do.call(cbind, tt); dim(ttt)
+  RP.adv.out <- RP.advance(ttt, tt.cl, tt.origin, logged=T, rand=123, RandomPairs = RandomPairs) 
+  RP.adv.out.ind=list()
+  pfp.cut.off <- FDRcutoff  
+  for( i in  1: length(s)) {
+    RP.adv.out.ind[[i]] <- RP.advance(s[[i]][[1]], s[[i]]$y, rep(1, length(s[[i]]$y)), RandomPairs = RandomPairs, logged=T, rand=123) 
+    RP.adv.out.ind[[i]]$up <- RP.adv.out.ind[[i]]$AveFC[RP.adv.out.ind[[i]]$pfp[, 1]< pfp.cut.off, , drop=F] #  class1 < class2
+    RP.adv.out.ind[[i]]$down <- RP.adv.out.ind[[i]]$AveFC[RP.adv.out.ind[[i]]$pfp[, 2]< pfp.cut.off, , drop=F] #  class1 > class2
+    RP.adv.out.ind[[i]]$updown <- rbind(RP.adv.out.ind[[i]]$up, RP.adv.out.ind[[i]]$down) 
+  }    # fold changes of average expressions (class1/class2). log fold-change if data has been log transformed, original fold change otherwise
+  RP.adv.out$up <- RP.adv.out$AveFC[RP.adv.out$pfp[, 1]< pfp.cut.off, , drop=F] #  class1 < class2
+  RP.adv.out$down <- RP.adv.out$AveFC[RP.adv.out$pfp[, 2]< pfp.cut.off, , drop=F] #  class1 > class2
+  RP.adv.out.ind[[i]]$down <- RP.adv.out.ind[[i]]$AveFC[RP.adv.out.ind[[i]]$pfp[, 2]< pfp.cut.off, , drop=F]
+  RP.adv.out$updown <- rbind(RP.adv.out$up, RP.adv.out$down)
+  list(RP.adv.out,  RP.adv.out.ind)
+}                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
 
