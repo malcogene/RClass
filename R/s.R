@@ -21,7 +21,6 @@ shiny::runApp(system.file("shiny", package=loc))  }
 
 #' @export 
 is.installed <- function(RequiredPackages) {
-  RequiredPackages = c('ggplot2', 'ggrepel')
   
   pinx <- which(RequiredPackages %in% installed.packages()[,1])
   if(length(pinx) !=0) {installPackages<- RequiredPackages[-pinx] };
