@@ -214,11 +214,12 @@ DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 
   }
 
 
+
                                                          
-#' @export                                                         
+#' @export                                                      
 RP.custom <- function(s,FDRcutoff=.1) {
   
-  is.installed(c('RankProd'))
+  is.installed.bioconductor(c('RankProd'))
 
   for(i in 1: length(s)) { s[[i]]$y <- as.numeric(as.factor(s[[i]]$y[,1]))-1 
   rownames(s[[i]]$x) <-  gsub("///.*", "", rownames(s[[i]]$x))
