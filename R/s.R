@@ -216,7 +216,7 @@ DEGs <- function(Exp, cl, adj.pval = 0.1,  logFC = 2, geomTextN=5, heatmapUpN = 
 
 
                                                          
-                                                         
+#' @export                                                         
 RP.custom <- function(s,FDRcutoff=.1) {
   
   is.installed(c('RankProd'))
